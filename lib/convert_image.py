@@ -1,9 +1,9 @@
-import cv2
 # from scipy.spatial import distance
+# from tqdm import tqdm
 import scipy.spatial as sp
-import matplotlib.pyplot as plt
-from tqdm import tqdm
 import numpy as np
+import os
+import cv2
 
 def read(path, switch_channels=True):
     image = cv2.imread(path)
@@ -22,7 +22,6 @@ def _colors64():
 
 _color_list = _colors64()
 
-
 def create_tree(colors):
     tree = sp.cKDTree(colors)  # creating kd-tree from C64 colors
     return tree
@@ -31,14 +30,36 @@ def create_tree(colors):
 def query_tree(small_image, tree):
     h, w, d = small_image.shape
     small_image_lst = small_image.reshape(h * w, d)
-    print(small_image_lst)
     _, result = tree.query(small_image_lst)  # get Euclidean distance and index of each C64 color in tree
 
     for idx, c in enumerate(_color_list):
         small_image_lst[result == idx] = c
     return small_image_lst.reshape(h, w, d)
 
+def convert_image(imagelist):
 
+    if not os.path.isdir("./images_64/"):
+        os.makedirs("./images_64/")
+
+    tree = create_tree(_color_list)
+
+    for filename in imagelist:
+
+        image_location = './images/'+filename
+        image = read(image_location)
+
+        # new_image = to_c64_colors(image)
+        new_image = query_tree(image, tree)
+
+        new_file_location = './images_64/'+filename
+    
+        cv2.imwrite(new_file_location, cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
+
+
+
+
+# DEN LANGSOMME MÅDE AT FINDE NÆRMESTE FARVE
+#  
 # def _get_closest_64_color(value):
 #     dst = 200000
 #     for color in _color_list:
@@ -60,16 +81,3 @@ def query_tree(small_image, tree):
 
    
 
-def convert_image(filename):
-    tree = create_tree(_color_list)
-
-    image_location = './images/'+filename
-    image = read(image_location)
-
-    # new_image = to_c64_colors(image)
-    new_image = query_tree(image, tree)
-
-    new_file_location = './images_64/'+filename
-    cv2.imwrite(new_file_location, cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
-    
-# print(_colors64())

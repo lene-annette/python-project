@@ -1,5 +1,6 @@
 #The images folder
 images
+images_64
 
 #__pycache__
 __pycache__

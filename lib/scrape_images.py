@@ -15,6 +15,8 @@ def collect_img_links(url):
             if img.get('src').startswith('http')]
 
 
+
+
 def download(from_url, to_file): 
     if not os.path.isfile(to_file):
         try: 
@@ -24,9 +26,12 @@ def download(from_url, to_file):
             pass    
 
 def download_imgs(links, out_folder="./images/"):
+    if not os.path.isdir(out_folder):
+                os.makedirs(out_folder)
     for l in links:
         file_name = os.path.join(out_folder, os.path.basename(l))
-        download(l,file_name)
+        if (file_name[-3:] != 'png'):
+            download(l,file_name)
 
 def scrape(url):
     links = collect_img_links(url)
