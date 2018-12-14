@@ -4,6 +4,7 @@ import lib.training as trainer
 import server.server as server
 import argparse
 from threading import Thread
+import os
 
 
 if __name__ == '__main__':
@@ -16,15 +17,16 @@ if __name__ == '__main__':
         thread = Thread(target = server.run)
         thread.setDaemon(True)
         thread.start()
-        image_list = scraper.scrape('http://127.0.0.1:5000/')
+        scraper.scrape('http://127.0.0.1:5000/')
     else:
         # image_list = scraper.scrape('https://commons.wikimedia.org/wiki/Main_Page')
         # image_list = scraper.scrape('https://burst.shopify.com/nature')
-        image_list = scraper.scrape('https://wallpaperlayer.com/silhouette-wallpaper-1109.html')
+        scraper.scrape('https://wallpaperlayer.com/silhouette-wallpaper-1109.html')
         # image_list = scraper.scrape('https://www.elementaryos-fr.org/wallpapers/?fbclid=IwAR2gbufht5Vvv1qwT102YScAjQ2OZtepVC9hA8wKS0F7DSU65zaNNN0qzFM')
 
         # image_list = scraper.scrape(url)  
 
-    trainer.find_weights(1000)
-    categorizer.convert_image(image_list) 
+    # trainer.find_weights(1000)
+    imageList = os.listdir('./images')
+    categorizer.categorize_image(imageList) 
     

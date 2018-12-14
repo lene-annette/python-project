@@ -51,7 +51,21 @@ def query_tree(small_image, tree):
         small_image_lst[result == idx] = c
     return small_image_lst.reshape(h, w, d)
 
-def convert_image(imagelist):
+def reshape(image):
+  h, w, d = image.shape
+  image_lst = image.reshape(h * w, d)
+  image_arr = np.reshape(image_lst, h*w*3)
+  return image_arr
+
+def predict(test_image, weights, image, filename, save_path):
+    prediction = perceptron(test_image, weights)
+    if (prediction == 1):
+        new_file_location = './categorized/'+save_path+'/'+filename
+        print(new_file_location)
+        cv2.imwrite(new_file_location, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
+        pass
+
+def categorize_image(imagelist):
 
     if not os.path.isdir("./images_64/"):
         os.makedirs("./images_64/")
@@ -69,11 +83,12 @@ def convert_image(imagelist):
         # new_image = to_c64_colors(image)
         new_image = query_tree(resized_image, tree)
         
+        test_image = reshape(new_image)
 
+        predict(test_image, forest_weights, image, filename, 'forest')
+        predict(test_image, urban_weights, image, filename, 'urban')
+        predict(test_image, water_weights, image, filename, 'water')
         
-        new_file_location = './images_64/'+filename
-    
-        cv2.imwrite(new_file_location, cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
 
 def resize(image, new_x_dim, new_y_dim):
     resized_image = cv2.resize(image, (new_x_dim, new_y_dim), interpolation=cv2.INTER_AREA)

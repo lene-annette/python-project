@@ -4,7 +4,6 @@ import sys
 import requests
 from urllib import request as req
 
-filenames = []
 
 def collect_img_links(url):
     r = requests.get(url)
@@ -18,7 +17,6 @@ def download(from_url, to_file):
     if not os.path.isfile(to_file):
         try: 
             req.urlretrieve(from_url, to_file)
-            filenames.append(os.path.basename(to_file))
         except:
             pass    
 
@@ -33,4 +31,3 @@ def download_imgs(links, out_folder="./images/"):
 def scrape(url):
     links = collect_img_links(url)
     download_imgs(links)
-    return filenames

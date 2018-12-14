@@ -53,8 +53,7 @@ def convert_image(imagelist):
         # new_image = to_c64_colors(image)
         new_image = query_tree(image, tree)
 
-        new_file_location = '../training_images/water64/'+filename
-    
+        new_file_location = '../training_images/water64/'+filename   
         cv2.imwrite(new_file_location, cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
 
 def resize(image, new_x_dim, new_y_dim):
