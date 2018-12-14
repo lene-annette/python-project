@@ -48,6 +48,9 @@ def convert_image(imagelist):
         image_location = './images/'+filename
         image = read(image_location)
 
+        # Resize to a fixed size of 400x300.
+        image = resize(image, 400, 300)
+
         # new_image = to_c64_colors(image)
         new_image = query_tree(image, tree)
 
@@ -55,7 +58,9 @@ def convert_image(imagelist):
     
         cv2.imwrite(new_file_location, cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
 
-
+def resize(image, new_x_dim, new_y_dim):
+    resized_image = cv2.resize(image, (new_x_dim, new_y_dim), interpolation=cv2.INTER_AREA)
+    return resized_image
 
 
 # DEN LANGSOMME MÅDE AT FINDE NÆRMESTE FARVE
