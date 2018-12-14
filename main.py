@@ -1,5 +1,5 @@
 import lib.scrape_images as scraper
-import lib.convert_image as converter
+import lib.categorize_image as categorizer
 import server.server as server
 import argparse
 from threading import Thread
@@ -23,5 +23,5 @@ if __name__ == '__main__':
 
         # image_list = scraper.scrape(url)  
 
-    converter.convert_image(image_list)        
+    categorizer.convert_image(image_list) 
     
