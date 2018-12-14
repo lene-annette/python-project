@@ -56,13 +56,13 @@ def read(path, switch_channels=True):
     return image
 
 def createFilenameList(path):
-    imageList = os.listdir('../training_images/'+path)
+    imageList = os.listdir('./training_images/'+path)
     return imageList  
 
 def getImages(imageList, folder):
   images = []
   for filename in imageList:
-    path = '../training_images/'+folder+'/'+filename
+    path = './training_images/'+folder+'/'+filename
     image = read(path)
     images.append(image)
   return images

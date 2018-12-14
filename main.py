@@ -25,6 +25,6 @@ if __name__ == '__main__':
 
         # image_list = scraper.scrape(url)  
 
-    trainer.find_weights(2000)
+    trainer.find_weights(1000)
     categorizer.convert_image(image_list) 
     
