@@ -69,14 +69,19 @@ def getImages(imageList, folder):
 
 forest_files = createFilenameList('forest64')
 forest_images = [reshape(image) for image in getImages(forest_files,'forest64')]
+forest_training = get_training_data(forest_images,urban_images)
+forest_weights,_ = pla(forest_training)
 
 urban_files = createFilenameList('urban')
 urban_images = [reshape(image) for image in getImages(urban_files,'urban64')]
-
-forest_training = get_training_data(forest_images,urban_images)
-forest_weights,_ = pla(forest_training)
 urban_training = get_training_data(urban_images,forest_images)
 urban_weights,_ = pla(urban_training)
+
+# water_files = createFilenameList('urban')
+# water_images = [reshape(image) for image in getImages(urban_files,'urban64')]
+# water_training = get_training_data(urban_images,forest_images)
+# water_weights,_ = pla(urban_training)
+
 
 print(forest_weights)
 print(perceptron(forest_images[1], forest_weights))
