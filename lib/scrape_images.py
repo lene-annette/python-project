@@ -14,9 +14,6 @@ def collect_img_links(url):
     return [img.get('src') for img in soup.select('img') 
             if img.get('src').startswith('http')]
 
-
-
-
 def download(from_url, to_file): 
     if not os.path.isfile(to_file):
         try: 

@@ -23,6 +23,7 @@ def _colors64():
 _color_list = _colors64()
 
 def create_tree(colors):
+    # pylint: disable=not-callable
     tree = sp.cKDTree(colors)  # creating kd-tree from C64 colors
     return tree
 
