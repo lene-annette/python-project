@@ -1,9 +1,9 @@
-# from scipy.spatial import distance
-# from tqdm import tqdm
 import scipy.spatial as sp
 import numpy as np
 import os
 import cv2
+import glob
+from PIL import Image
 
 def read(path, switch_channels=True):
     image = cv2.imread(path)
@@ -38,23 +38,23 @@ def query_tree(small_image, tree):
 
 def convert_image(imagelist):
 
-    if not os.path.isdir("./images_64/"):
-        os.makedirs("./images_64/")
+    if not os.path.isdir("../training_images/forest64"):
+        os.makedirs("../training_images/forest64")
 
     tree = create_tree(_color_list)
 
     for filename in imagelist:
 
-        image_location = './images/'+filename
+        image_location = '../training_images/forest/'+filename
         image = read(image_location)
-
         # Resize to a fixed size of 400x300.
         image = resize(image, 400, 300)
-
         # new_image = to_c64_colors(image)
         new_image = query_tree(image, tree)
-        
-        new_file_location = './images_64/'+filename
+
+        print(new_image)
+
+        new_file_location = '../training_images/forest64/'+filename
     
         cv2.imwrite(new_file_location, cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
 
@@ -62,32 +62,8 @@ def resize(image, new_x_dim, new_y_dim):
     resized_image = cv2.resize(image, (new_x_dim, new_y_dim), interpolation=cv2.INTER_AREA)
     return resized_image
 
+def createImageList():
+    imageList = os.listdir('../training_images/forest')
+    return imageList
 
-
-
-
-
-
-# DEN LANGSOMME MÅDE AT FINDE NÆRMESTE FARVE
-#  
-# def _get_closest_64_color(value):
-#     dst = 200000
-#     for color in _color_list:
-#         new_dst = distance.euclidean(color, value)
-#         if new_dst < dst:
-#             dst = new_dst
-#             return_color = color
-#     return return_color
-
-# def to_c64_colors(image):
-
-#     c64_img = np.copy(image)
-#     h, w, _ = c64_img.shape
-    
-#     for x in tqdm(range(w)):
-#         for y in range(h):
-#             c64_img[y, x] = _get_closest_64_color(c64_img[y, x])
-#     return c64_img
-
-   
-
+convert_image(createImageList())    

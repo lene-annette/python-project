@@ -1,25 +1,33 @@
 import numpy as np
-import glob
-from PIL import Image
-
-forestFolderPath = '../training_images/forest'
-forestImagePath = glob.glob(forestFolderPath + '/*.JPG') 
-urbanFolderPath = '../training_images/urban'
-urbanImagePath = glob.glob(urbanFolderPath + '/*.JPG') 
+import cv2
+import os
 
 
-forest_array = np.array( [np.array(Image.open(img).convert('L'), 'f') for img in forestImagePath] )
-urban_array = np.array( [np.array(Image.open(img).convert('L'), 'f') for img in urbanImagePath] )
+def read(path, switch_channels=True):
+    image = cv2.imread(path)
+    if switch_channels:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return image
 
-forest_training = get_training_data(forest_array,urban_array)
-forest_weights,_ = pla(forest_training)
-urban_training = get_training_data(urban_array,forest_array)
-urban_weights,_ = pla(urban_training)
+def createFilenameList(path):
+    imageList = os.listdir('../training_images/'+path)
+    return imageList  
+
+def getImages(imageList):
+  images = []
+  for filename in imageList:
+    path = '../training_images/forest64/'+filename
+    image = read(path)
+    images.append(image)
+  return images
+
+
 
 
 def perceptron(input, weights):
   # This is the same as the dot product np.dot(i, w)
-  dot_product = sum([i * w for i, w in zip(input, weights)])
+  dot_product = np.dot(input, weights)
+  # dot_product = sum([i * w for i, w in zip(input, weights)])
   output = activate(dot_product)
   return output
 
@@ -54,7 +62,23 @@ def reshape(image):
 def get_training_data(right_array,wrong_array):
   training_data_list = []
   for image in right_array:
-    training_data_list.append((reshape(image),1))
+    training_data_list.append((image,1))
   for image in wrong_array:
-    training_data_list.append((reshape(image),-1))
+    training_data_list.append((image,-1))
   return training_data_list
+
+
+forest_files = createFilenameList('forest64')
+forest_images = [reshape(image) for image in getImages(forest_files)]
+
+urban_files = createFilenameList('urban')
+urban_images = [reshape(image) for image in getImages(urban_files)]
+
+forest_training = get_training_data(forest_images,urban_images)
+forest_weights,_ = pla(forest_training)
+urban_training = get_training_data(urban_images,forest_images)
+urban_weights,_ = pla(urban_training)
+
+print(forest_weights)
+print(forest_images[0])
+print(perceptron(forest_images[1], forest_weights))
