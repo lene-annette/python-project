@@ -87,9 +87,9 @@ def find_weights(no_iterations, eta):
   water_files = createFilenameList('water64')
   water_images = [reshape(image) for image in getImages(water_files,'water64')]
 
-  forest_training = get_training_data(forest_images, urban_images)
-  urban_training = get_training_data(urban_images, forest_images)
-  water_training = get_training_data(water_images, forest_images)
+  forest_training = get_training_data(forest_images, urban_images + water_images)
+  urban_training = get_training_data(urban_images, forest_images + water_images)
+  water_training = get_training_data(water_images, forest_images + urban_images)
 
   forest_weights,_ = pla(forest_training, no_iterations, eta)
   urban_weights,_ = pla(urban_training, no_iterations, eta)

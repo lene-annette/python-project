@@ -19,14 +19,9 @@ if __name__ == '__main__':
         thread.start()
         scraper.scrape('http://127.0.0.1:5000/')
     else:
-        # image_list = scraper.scrape('https://commons.wikimedia.org/wiki/Main_Page')
-        # image_list = scraper.scrape('https://burst.shopify.com/nature')
         scraper.scrape('https://wallpaperlayer.com/silhouette-wallpaper-1109.html')
-        # image_list = scraper.scrape('https://www.elementaryos-fr.org/wallpapers/?fbclid=IwAR2gbufht5Vvv1qwT102YScAjQ2OZtepVC9hA8wKS0F7DSU65zaNNN0qzFM')
 
-        # image_list = scraper.scrape(url)  
-
-    # trainer.find_weights(3000, 0.2)
+    trainer.find_weights(3000, 0.2)
     imageList = os.listdir('./images')
     categorizer.categorize_image(imageList) 
     
