@@ -37,31 +37,32 @@ def query_tree(small_image, tree):
         small_image_lst[result == idx] = c
     return small_image_lst.reshape(h, w, d)
 
-def convert_image(imagelist):
+def convert_image(imagelist, cat):
 
-    if not os.path.isdir("../training_images/water64"):
-        os.makedirs("../training_images/water64")
+    if not os.path.isdir('../training_images/'+cat+'64'):
+        os.makedirs('../training_images/'+cat+'64')
 
     tree = create_tree(_color_list)
 
     for filename in imagelist:
 
-        image_location = '../training_images/water/'+filename
+        image_location = '../training_images/'+cat+'/'+filename
         image = read(image_location)
         # Resize to a fixed size of 400x300.
         image = resize(image, 400, 300)
         # new_image = to_c64_colors(image)
         new_image = query_tree(image, tree)
 
-        new_file_location = '../training_images/water64/'+filename   
+        new_file_location = '../training_images/'+cat+'/'+filename   
         cv2.imwrite(new_file_location, cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
 
 def resize(image, new_x_dim, new_y_dim):
     resized_image = cv2.resize(image, (new_x_dim, new_y_dim), interpolation=cv2.INTER_AREA)
     return resized_image
 
-def createImageList():
-    imageList = os.listdir('../training_images/water')
+def createImageList(cat):
+    imageList = os.listdir('../training_images/'+cat)
     return imageList
 
-convert_image(createImageList())    
+category = 'forest'
+convert_image(createImageList(category), category)    

@@ -11,7 +11,7 @@ def perceptron(input, weights):
   output = activate(dot_product)
   return output
 
-def pla(training_data, no_iterations=1000, eta=0.5):
+def pla(training_data, no_iterations=10000, eta=0.5):
   # eta is the learning rate
   # initial_error
   error = np.random.random()
@@ -74,8 +74,10 @@ def make_result(weights):
   result += " ]"
   return result
 
-def find_weights(no_iterations):
+def find_weights(no_iterations, eta):
   print('Calculating weights..')
+  print('Iterations: '+str(no_iterations))
+  print('Learning rate: '+str(eta))
   forest_files = createFilenameList('forest64')
   forest_images = [reshape(image) for image in getImages(forest_files,'forest64')]
 
@@ -89,16 +91,16 @@ def find_weights(no_iterations):
   urban_training = get_training_data(urban_images, forest_images)
   water_training = get_training_data(water_images, forest_images)
 
-  forest_weights,_ = pla(forest_training, no_iterations)
-  urban_weights,_ = pla(urban_training, no_iterations)
-  water_weights,_ = pla(water_training, no_iterations)
+  forest_weights,_ = pla(forest_training, no_iterations, eta)
+  urban_weights,_ = pla(urban_training, no_iterations, eta)
+  water_weights,_ = pla(water_training, no_iterations, eta)
 
   try:
     print('Exporting weights to module..')
     forest_str = make_result(forest_weights)
     urban_str = make_result(urban_weights)
     water_str = make_result(water_weights)
-    module_txt = 'forest_weights = {} \nurban_weights = {} \nwater_weights = {}'.format(forest_str, urban_str, water_str)   
+    module_txt = 'forest_weights = {} \nurban_weights = {} \nwater_weights = {} \niterations = {} \neta = {}'.format(forest_str, urban_str, water_str, no_iterations, eta)   
     module_dir = '../modules'
     if not os.path.isdir(module_dir):
       os.makedirs(module_dir)

@@ -1,5 +1,4 @@
-# from scipy.spatial import distance
-# from tqdm import tqdm
+from tqdm import tqdm
 import scipy.spatial as sp
 import numpy as np
 import os
@@ -59,20 +58,23 @@ def reshape(image):
 
 def predict(test_image, weights, image, filename, save_path):
     prediction = perceptron(test_image, weights)
-    if (prediction == 1):
+    if (prediction == 1):       
+        if not os.path.isdir("./categorized/"+save_path):
+            os.makedirs("./categorized/"+save_path)
         new_file_location = './categorized/'+save_path+'/'+filename
-        print(new_file_location)
         cv2.imwrite(new_file_location, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
         pass
 
 def categorize_image(imagelist):
 
-    if not os.path.isdir("./images_64/"):
-        os.makedirs("./images_64/")
+    if not os.path.isdir("./categorized/"):
+        os.makedirs("./categorized/")
 
     tree = create_tree(_color_list)
 
-    for filename in imagelist:
+    print('Finding matching categories and saving pictures in category folders.. ')
+
+    for filename in tqdm(imagelist):
 
         image_location = './images/'+filename
         image = read(image_location)
@@ -88,7 +90,8 @@ def categorize_image(imagelist):
         predict(test_image, forest_weights, image, filename, 'forest')
         predict(test_image, urban_weights, image, filename, 'urban')
         predict(test_image, water_weights, image, filename, 'water')
-        
+
+    print('Categorization finished.')    
 
 def resize(image, new_x_dim, new_y_dim):
     resized_image = cv2.resize(image, (new_x_dim, new_y_dim), interpolation=cv2.INTER_AREA)
