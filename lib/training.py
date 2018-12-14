@@ -1,6 +1,7 @@
 import numpy as np
 import cv2
 import os
+from tqdm import tqdm
 
 
 def perceptron(input, weights):
@@ -10,7 +11,7 @@ def perceptron(input, weights):
   output = activate(dot_product)
   return output
 
-def pla(training_data, no_iterations=5000, eta=0.5):
+def pla(training_data, no_iterations=100, eta=0.5):
   # eta is the learning rate
   # initial_error
   error = np.random.random()
@@ -18,7 +19,7 @@ def pla(training_data, no_iterations=5000, eta=0.5):
   weights =  np.random.random(dim)
   weight_history = [np.copy(weights)]
 
-  for i in range(no_iterations):
+  for i in tqdm(range(no_iterations)):
     inp_vec, expected_label = training_data[i % len(training_data)]
     perceptron_output = perceptron(inp_vec, weights)
     error = expected_label - perceptron_output
@@ -66,39 +67,49 @@ def getImages(imageList, folder):
     images.append(image)
   return images
 
+def make_result(weights):
+  result = "[ "
+  for weight in tqdm(weights):
+    result += str(weight)+", "
+  result += " ]"
+  return result
 
-forest_files = createFilenameList('forest64')
-forest_images = [reshape(image) for image in getImages(forest_files,'forest64')]
+def find_weights():
+  print('Calculating weights..')
+  forest_files = createFilenameList('forest64')
+  forest_images = [reshape(image) for image in getImages(forest_files,'forest64')]
 
-urban_files = createFilenameList('urban64')
-urban_images = [reshape(image) for image in getImages(urban_files,'urban64')]
+  urban_files = createFilenameList('urban64')
+  urban_images = [reshape(image) for image in getImages(urban_files,'urban64')]
 
-water_files = createFilenameList('water64')
-water_images = [reshape(image) for image in getImages(water_files,'water64')]
+  water_files = createFilenameList('water64')
+  water_images = [reshape(image) for image in getImages(water_files,'water64')]
+
+  forest_training = get_training_data(forest_images, urban_images)
+  urban_training = get_training_data(urban_images, forest_images)
+  water_training = get_training_data(water_images, forest_images)
+
+  forest_weights,_ = pla(forest_training)
+  urban_weights,_ = pla(urban_training)
+  water_weights,_ = pla(water_training)
+
+  try:
+    print('Exporting weights to module..')
+    forest_str = make_result(forest_weights)
+    urban_str = make_result(urban_weights)
+    water_str = make_result(water_weights)
+    module_txt = 'forest_weights = {} \nurban_weights = {} \nwater_weights = {}'.format(forest_str, urban_str, water_str)   
+    module_dir = 'modules'
+    if not os.path.isdir(module_dir):
+      os.makedirs(module_dir)
+    with open(os.path.join(module_dir, 'weights.py'), "w" ) as fp:
+      fp.write(module_txt)
+
+    print('Weight module created successfully.')  
+  except Exception as e:
+    print('Python module save failure!')  
+  
+find_weights()
 
 
 
-forest_training = get_training_data(forest_images, urban_images)
-forest_weights,_ = pla(forest_training)
-
-
-urban_training = get_training_data(urban_images, forest_images)
-urban_weights,_ = pla(urban_training)
-
-
-water_training = get_training_data(water_images, forest_images)
-water_weights,_ = pla(water_training)
-
-print('f - f : '+str(perceptron(forest_images[4], forest_weights)))
-print('u - u : '+str(perceptron(urban_images[1], urban_weights)))
-print('w - w : '+str(perceptron(water_images[3], water_weights)))
-print('f - w : '+str(perceptron(forest_images[4], water_weights)))
-print('u - f : '+str(perceptron(urban_images[1], forest_weights)))
-print('w - f : '+str(perceptron(water_images[3], forest_weights)))
-print('f - u : '+str(perceptron(forest_images[4], urban_weights)))
-print('u - w : '+str(perceptron(urban_images[1], water_weights)))
-print('w - u : '+str(perceptron(water_images[3], urban_weights)))
-
-
-
-# np.concatenate(a,b)
