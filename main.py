@@ -1,8 +1,10 @@
 import lib.scrape_images as scraper
 import lib.categorize_image as categorizer
+import lib.training as trainer
 import server.server as server
 import argparse
 from threading import Thread
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -23,5 +25,6 @@ if __name__ == '__main__':
 
         # image_list = scraper.scrape(url)  
 
+    trainer.find_weights(2000)
     categorizer.convert_image(image_list) 
     

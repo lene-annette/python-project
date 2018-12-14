@@ -74,7 +74,7 @@ def make_result(weights):
   result += " ]"
   return result
 
-def find_weights():
+def find_weights(no_iterations):
   print('Calculating weights..')
   forest_files = createFilenameList('forest64')
   forest_images = [reshape(image) for image in getImages(forest_files,'forest64')]
@@ -89,9 +89,9 @@ def find_weights():
   urban_training = get_training_data(urban_images, forest_images)
   water_training = get_training_data(water_images, forest_images)
 
-  forest_weights,_ = pla(forest_training)
-  urban_weights,_ = pla(urban_training)
-  water_weights,_ = pla(water_training)
+  forest_weights,_ = pla(forest_training, no_iterations)
+  urban_weights,_ = pla(urban_training, no_iterations)
+  water_weights,_ = pla(water_training, no_iterations)
 
   try:
     print('Exporting weights to module..')
@@ -106,7 +106,7 @@ def find_weights():
       fp.write(module_txt)
 
     print('Weight module created successfully.')  
-  except Exception as e:
+  except Exception as _:
     print('Python module save failure!')  
   
 find_weights()
