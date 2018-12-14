@@ -3,7 +3,7 @@ import scipy.spatial as sp
 import numpy as np
 import os
 import cv2
-# from modules.weights import forest_weights,urban_weights,water_weights
+from modules.weights import forest_weights,urban_weights,water_weights
 
 def activate(num):
   # turn a sum over 0 into 1, and below 0 into -1
