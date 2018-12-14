@@ -10,7 +10,7 @@ def perceptron(input, weights):
   output = activate(dot_product)
   return output
 
-def pla(training_data, no_iterations=1000, eta=0.5):
+def pla(training_data, no_iterations=5000, eta=0.5):
   # eta is the learning rate
   # initial_error
   error = np.random.random()
@@ -69,23 +69,36 @@ def getImages(imageList, folder):
 
 forest_files = createFilenameList('forest64')
 forest_images = [reshape(image) for image in getImages(forest_files,'forest64')]
-forest_training = get_training_data(forest_images,urban_images)
+
+urban_files = createFilenameList('urban64')
+urban_images = [reshape(image) for image in getImages(urban_files,'urban64')]
+
+water_files = createFilenameList('water64')
+water_images = [reshape(image) for image in getImages(water_files,'water64')]
+
+
+
+forest_training = get_training_data(forest_images, urban_images)
 forest_weights,_ = pla(forest_training)
 
-urban_files = createFilenameList('urban')
-urban_images = [reshape(image) for image in getImages(urban_files,'urban64')]
-urban_training = get_training_data(urban_images,forest_images)
+
+urban_training = get_training_data(urban_images, forest_images)
 urban_weights,_ = pla(urban_training)
 
-# water_files = createFilenameList('urban')
-# water_images = [reshape(image) for image in getImages(urban_files,'urban64')]
-# water_training = get_training_data(urban_images,forest_images)
-# water_weights,_ = pla(urban_training)
 
+water_training = get_training_data(water_images, forest_images)
+water_weights,_ = pla(water_training)
 
-print(forest_weights)
-print(perceptron(forest_images[1], forest_weights))
-print(perceptron(urban_images[0], forest_weights))
+print('f - f : '+str(perceptron(forest_images[4], forest_weights)))
+print('u - u : '+str(perceptron(urban_images[1], urban_weights)))
+print('w - w : '+str(perceptron(water_images[3], water_weights)))
+print('f - w : '+str(perceptron(forest_images[4], water_weights)))
+print('u - f : '+str(perceptron(urban_images[1], forest_weights)))
+print('w - f : '+str(perceptron(water_images[3], forest_weights)))
+print('f - u : '+str(perceptron(forest_images[4], urban_weights)))
+print('u - w : '+str(perceptron(urban_images[1], water_weights)))
+print('w - u : '+str(perceptron(water_images[3], urban_weights)))
+
 
 
 # np.concatenate(a,b)
