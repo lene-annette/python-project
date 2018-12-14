@@ -101,12 +101,11 @@ def find_weights(no_iterations, eta):
     urban_str = make_result(urban_weights)
     water_str = make_result(water_weights)
     module_txt = 'forest_weights = {} \nurban_weights = {} \nwater_weights = {} \niterations = {} \neta = {}'.format(forest_str, urban_str, water_str, no_iterations, eta)   
-    module_dir = '../modules'
+    module_dir = './modules'
     if not os.path.isdir(module_dir):
       os.makedirs(module_dir)
     with open(os.path.join(module_dir, 'weights.py'), "w" ) as fp:
       fp.write(module_txt)
-
     print('Weight module created successfully.')  
   except Exception as _:
     print('Python module save failure!')  

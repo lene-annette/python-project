@@ -26,7 +26,7 @@ if __name__ == '__main__':
 
         # image_list = scraper.scrape(url)  
 
-    trainer.find_weights(5000, 0.1)
+    # trainer.find_weights(3000, 0.2)
     imageList = os.listdir('./images')
     categorizer.categorize_image(imageList) 
     
