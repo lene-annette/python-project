@@ -38,23 +38,21 @@ def query_tree(small_image, tree):
 
 def convert_image(imagelist):
 
-    if not os.path.isdir("../training_images/forest64"):
-        os.makedirs("../training_images/forest64")
+    if not os.path.isdir("../training_images/urban64"):
+        os.makedirs("../training_images/urban64")
 
     tree = create_tree(_color_list)
 
     for filename in imagelist:
 
-        image_location = '../training_images/forest/'+filename
+        image_location = '../training_images/urban/'+filename
         image = read(image_location)
         # Resize to a fixed size of 400x300.
         image = resize(image, 400, 300)
         # new_image = to_c64_colors(image)
         new_image = query_tree(image, tree)
 
-        print(new_image)
-
-        new_file_location = '../training_images/forest64/'+filename
+        new_file_location = '../training_images/urban64/'+filename
     
         cv2.imwrite(new_file_location, cv2.cvtColor(new_image, cv2.COLOR_RGB2BGR))
 
@@ -63,7 +61,7 @@ def resize(image, new_x_dim, new_y_dim):
     return resized_image
 
 def createImageList():
-    imageList = os.listdir('../training_images/forest')
+    imageList = os.listdir('../training_images/urban')
     return imageList
 
 convert_image(createImageList())    
