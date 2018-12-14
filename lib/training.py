@@ -109,7 +109,7 @@ def find_weights(no_iterations):
   except Exception as _:
     print('Python module save failure!')  
   
-find_weights()
+
 
 
 
