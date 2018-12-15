@@ -21,7 +21,7 @@ if __name__ == '__main__':
     else:
         scraper.scrape('https://wallpaperlayer.com/silhouette-wallpaper-1109.html')
 
-    trainer.find_weights(3000, 0.2)
+    trainer.find_weights(4000, 0.2)
     imageList = os.listdir('./images')
     categorizer.categorize_image(imageList) 
     
