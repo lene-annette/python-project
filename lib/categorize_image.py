@@ -63,8 +63,8 @@ def predict(test_image, weights, image, filename, save_path):
             os.makedirs("./categorized/"+save_path)
         new_file_location = './categorized/'+save_path+'/'+filename
         cv2.imwrite(new_file_location, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
-        pass
-
+        return 1
+    return 0
 def categorize_image(imagelist):
 
     if not os.path.isdir("./categorized/"):
@@ -75,6 +75,8 @@ def categorize_image(imagelist):
     print('Finding matching categories and saving pictures in category folders.. ')
 
     for filename in tqdm(imagelist):
+
+        categories_found = 0
 
         image_location = './images/'+filename
         image = read(image_location)
@@ -87,9 +89,15 @@ def categorize_image(imagelist):
         
         test_image = reshape(new_image)
 
-        predict(test_image, forest_weights, image, filename, 'forest')
-        predict(test_image, urban_weights, image, filename, 'urban')
-        predict(test_image, water_weights, image, filename, 'water')
+        categories_found += predict(test_image, forest_weights, image, filename, 'forest')
+        categories_found += predict(test_image, urban_weights, image, filename, 'urban')
+        categories_found += predict(test_image, water_weights, image, filename, 'water')
+
+        if (categories_found == 0):       
+            if not os.path.isdir("./categorized/others"):
+             os.makedirs("./categorized/others")
+            new_file_location = './categorized/others/'+filename
+            cv2.imwrite(new_file_location, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
 
     print('Categorization finished.')    
 
