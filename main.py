@@ -54,8 +54,10 @@ if __name__ == '__main__':
             if (training_rate < 0.001 or training_rate > 0.9):
                 raise ValueError('The training rate value must be between 0.001 and 0.9')
             
-            print('\nInitiating the trainer...')
-            trainer.find_weights(int(iterations), training_rate)
+            print('\nInitiating the trainer with the following settings...')
+            print(f'Iterations: {int(iterations)}')
+            print(f'Learning rate: {training_rate}')
+            trainer.calculate_weights(int(iterations), training_rate)
             print('Trainer finished!')
 
         if args.url:
