@@ -128,10 +128,3 @@ def categorize_image(imagelist):
              os.makedirs("./categorized/others")
             new_file_location = './categorized/others/'+filename
             cv2.imwrite(new_file_location, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
-
-    print('Categorization finished.')    
-
-
-
-   
-
