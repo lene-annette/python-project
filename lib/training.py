@@ -17,15 +17,14 @@ def pla(training_data, no_iterations=10000, eta=0.5):
   error = np.random.random()
   dim = len(training_data[0][0])
   weights =  np.random.random(dim)
-  weight_history = [np.copy(weights)]
 
   for i in tqdm(range(no_iterations)):
     inp_vec, expected_label = training_data[i % len(training_data)]
     perceptron_output = perceptron(inp_vec, weights)
     error = expected_label - perceptron_output
     weights += eta * error * inp_vec
-    weight_history.append(np.copy(weights))        
-  return weights, weight_history 
+          
+  return weights 
 
 def activate(num):
   # turn a sum over 0 into 1, and below 0 into -1
@@ -91,9 +90,9 @@ def find_weights(no_iterations, eta):
   urban_training = get_training_data(urban_images, forest_images + water_images)
   water_training = get_training_data(water_images, forest_images + urban_images)
 
-  forest_weights,_ = pla(forest_training, no_iterations, eta)
-  urban_weights,_ = pla(urban_training, no_iterations, eta)
-  water_weights,_ = pla(water_training, no_iterations, eta)
+  forest_weights = pla(forest_training, no_iterations, eta)
+  urban_weights = pla(urban_training, no_iterations, eta)
+  water_weights = pla(water_training, no_iterations, eta)
 
   try:
     print('Exporting weights to module..')
