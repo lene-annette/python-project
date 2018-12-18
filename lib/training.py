@@ -58,7 +58,11 @@ def read(path, switch_channels=True):
     return image
 
 def reshape(image):
-    '''???'''
+    '''
+    This function reshapes the images into one dimensional arrays to be used for training
+    It will return an array with the RGB values represented on a continuous basis:
+    [r,g,b,r,g,b,...,r,g,b]
+    '''
     h, w, d = image.shape
     image_lst = image.reshape(h * w, d)
     image_arr = np.reshape(image_lst, h * w * 3)
@@ -80,7 +84,9 @@ def get_training_data(right_array,wrong_array):
 def pla(training_data, no_iterations, eta):
     '''
     The training algorithm of the perceptron. It takes the following arguments:
-        - training_data: ?
+        - training_data: An array of tuples, where the tuples are the image data
+                        and a label which indicate if the image should be considered
+                        as 'right' or 'wrong' when used in training.
         - no_iterations: The number of times the training algoritm should 
                         pick an image from the training data and learn from it.
                         Note: A high number of iterations is preferred.
@@ -105,7 +111,14 @@ def pla(training_data, no_iterations, eta):
     return weights 
 
 def perceptron(input, weights):
-    ''' ??? '''
+    ''' 
+    Sums up all the products of weight values and color values.
+    Then uses the activate function to return either 1 or -1 according
+    to if the dot product is positive or negative.
+        - input: An array of RGB color data.
+        - weights: An array with the weights that corresponds to the
+                category that is tested for.
+    '''
     dot_product = np.dot(input, weights)
     # The following line does the same as the above line, however it is slower:
     # dot_product = sum([i * w for i, w in zip(input, weights)])
