@@ -1,7 +1,13 @@
 import flask
+import logging
 import os
 
 server = flask.Flask(__name__)
+
+# Disable logging (no HTTP requests during scraping).
+server.logger.disabled = True
+log = logging.getLogger('werkzeug')
+log.disabled = True
 
 @server.route('/')
 def home():
@@ -29,4 +35,3 @@ def home():
 
 def run():
     server.run()
-
