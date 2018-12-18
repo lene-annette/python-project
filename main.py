@@ -12,7 +12,9 @@ import server.server as server
 if __name__ == '__main__':
 
     try:
+        # Using the argparse library to create arguments for the program.
         parser = argparse.ArgumentParser(
+            # Maintain whitespace for all sorts of help text, including the description.
             formatter_class=argparse.RawTextHelpFormatter,
             description=
             '''
@@ -46,6 +48,7 @@ if __name__ == '__main__':
             help='a URL to scrape images from', 
         )
         parser.add_argument('-t', '--trainer', 
+            # Add two parameters for this argument, converting them to float.
             nargs=2,
             type=float,
             metavar=('<iterations (min. 1000)>', '<training rate (0.001-0.9)>'),
@@ -54,6 +57,7 @@ if __name__ == '__main__':
         
         args = parser.parse_args()
 
+        # If the trainer argument has been used.
         if args.trainer:
             iterations, training_rate = args.trainer
 
@@ -65,29 +69,35 @@ if __name__ == '__main__':
             print('\nInitiating the trainer with the following settings...')
             print(f'Iterations: {int(iterations)}')
             print(f'Learning rate: {training_rate}')
+            # Compute weights for each category to train the perceptrons.
             trainer.compute_weights(int(iterations), training_rate)
             print('Trainer finished!')
 
         if args.url:
             url = args.url
             print(f'\nAttempting to scrape from the URL: {url} ...')
-            # scraper.scrape('https://wallpaperlayer.com/silhouette-wallpaper-1109.html') # TO BE DELETED.
+            # Scrape from the given URL.
             scraper.scrape(url)
             print('Scraping finished successfully!')
         else:
             print(f'\nInitiating local Flask server...\n')
+            # Start the Flask server in a separate thread.
             thread = Thread(target = server.run)
+            # Allows the main thread to run while the Flask server is up.
+            # It will be correctly killed when the program shuts down.
             thread.setDaemon(True)
             thread.start()
             
             time.sleep(1)
 
             print('\nScraping from the local Flask server...')
+            # Scrape from localhost.
             scraper.scrape('http://127.0.0.1:5000/')
             print('Scraping finished successfully!')
 
         print('\nInitiating the categorization process...')
         image_list = os.listdir('./images')
+        # Categorize the downloaded images.
         categorizer.categorize_image(image_list)
         print('Categorization finished successfully!')
 
