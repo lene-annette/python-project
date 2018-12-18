@@ -9,7 +9,7 @@ from modules.weights import forest_weights, urban_weights, water_weights
 
 def categorize_image(image_list):
     '''
-    Runs through a list of images and determines which 
+    Run through a list of images and determines which 
     category an image is predicted to belong to.
     '''
     if not os.path.isdir('./categorized/'):
@@ -49,26 +49,26 @@ def categorize_image(image_list):
     print('All images saved in the "categorized" folder!')
 
 def create_tree(colors):
-    '''Creates a color tree (cKDTree).'''
+    '''Create a color tree (cKDTree).'''
     # Creating kd-tree from C64 colors.
     tree = sp.cKDTree(colors) # pylint: disable=not-callable
     return tree
 
 def read(path, switch_channels=True):
-    '''Reads an image from file.'''
+    '''Read an image from file.'''
     image = cv2.imread(path)
     if switch_channels:
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     return image
 
 def resize(image, new_x_dim, new_y_dim):
-    '''Resizes an image into a fixed size.'''
+    '''Resize an image into a fixed size.'''
     resized_image = cv2.resize(image, (new_x_dim, new_y_dim), interpolation=cv2.INTER_AREA)
     return resized_image
 
 def query_tree(small_image, tree):
     '''
-    Runs through all the pixels in an image and replaces the color
+    Run through all the pixels in an image and replaces the color
     for the specific pixel with the color that is closest 
     to its resembling 64 color in the color tree.
     '''
@@ -83,33 +83,32 @@ def query_tree(small_image, tree):
 
 def reshape(image):
     '''
-    Reshapes the image into one dimensional array to be used for training.
+    Reshape the image into one dimensional array to be used for training.
     It will return an array with the RGB values represented on a continuous basis:
     [r,g,b,r,g,b,...,r,g,b]
     '''
     h, w, d = image.shape
-    image_lst = image.reshape(h * w, d)
-    image_arr = np.reshape(image_lst, h * w * 3)
+    image_list = image.reshape(h * w, d)
+    image_arr = np.reshape(image_list, h * w * 3)
     return image_arr
 
 def predict(original_image, filename, save_path, test_image, weights):
     ''' 
-    Given a test_image that has been resized, turn into 64 colors and where 
-    the array with rgb values has been reshaped to fit the perceptron and given
-    the weight corresponding to a certain category, this function will predict 
-    if the image belongs to this category using the perceptron function.
+    Given a test_image that has been resized, turn it into 64 colors where 
+    the array with the rgb values has been reshaped to fit the perceptron. 
+    Given the weight corresponding to a certain category, this function will predict 
+    whether the image belongs to the category using the perceptron function.
     If the perceptron predicts that the image belongs to the category, the original
-    image is save into the category folder.
-     
+    image is saved into its specific category folder. It takes the following arguments:
+
         - original_image: An array containing the original image.
         - filename: The filename for the image to be stored.
         - save_path: The folder name for the category folder.
-        - test_image: An array with the data in a format suitable
-                      for the perceptron.
+        - test_image: An array with the data in a format suitable for the perceptron.
         - weights: An array with the weights for the category.
 
-    Returns 1 if the image is predicted to belong to the category 
-    and saved into the category folder and 0 if not.
+    If the image is predicted to belong to the given category, it will save
+    the image into the category folder and return 1. If not, it will return 0.
     '''
     prediction = perceptron(test_image, weights)
     if (prediction == 1):       
@@ -122,13 +121,12 @@ def predict(original_image, filename, save_path, test_image, weights):
 
 def perceptron(input, weights):
     ''' 
-    Sums up all the products of weight values and color values.
-    Then uses the activate function to return either 1 or -1 according
-    to if the dot product is positive or negative.
-    
+    Sum up all the products of weight values and color values.
+    It then uses the activate function to return either 1 or -1 according
+    to if the dot product is positive or negative. It takes the following arguments:
+
         - input: An array of RGB color data.
-        - weights: An array with the weights that corresponds to 
-                   the category that is tested for.
+        - weights: An array with the weights that corresponds to the category that is tested for.
     '''
     dot_product = np.dot(input, weights)
     # The following line does the same as the above line, however it is slower:
@@ -137,7 +135,7 @@ def perceptron(input, weights):
     return output
 
 def activate(num):
-    '''Determines the output that the perceptron produces.'''
+    '''Determine the output that the perceptron produces.'''
     # Turn a sum over 0 into 1, and below 0 into -1.
     if num > 0:
         return 1

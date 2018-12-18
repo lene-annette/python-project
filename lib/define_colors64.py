@@ -1,6 +1,6 @@
 def colors64():
     '''
-    Finds 64 colors by choosing the middle values in 
+    Find 64 colors by choosing the middle values in 
     each of the 64 small cubes in the RGB color cube.
     The first color will be [32,32,32], the next [96,32,32] and so on.
     

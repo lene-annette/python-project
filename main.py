@@ -21,7 +21,7 @@ if __name__ == '__main__':
             '''
             This program uses perceptrons to analyze the colors in an image in order to 
             determine which of the following categories the image belongs to: 
-            forest, urban or water. If a match is not found within one of these categories 
+            forest, urban or water. If a match is not found within one of these categories, 
             the image will be considered as others. The program scrapes images from a given URL, and then 
             categorizes each image under one of the above categories.
             

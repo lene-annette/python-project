@@ -5,18 +5,19 @@ from tqdm import tqdm
 
 def compute_weights(no_iterations, eta):
     '''
-    Uses helper functions to read the training images from file, reshape them and then 
+    Compute the weights for all categories using a number of iterations and a training rate.
+    This function uses helper functions to read the training images from file, reshape them and then 
     finally use the `pla` function to compute the weights to be used be the perceptrons.
     It also writes the weights into a python module, which is imported and used in another library file.
     '''
     forest_files = create_filename_list('forest64')
-    forest_images = [reshape(image) for image in get_images(forest_files, 'forest64')]
+    forest_images = [reshape(image) for image in get_training_images(forest_files, 'forest64')]
 
     urban_files = create_filename_list('urban64')
-    urban_images = [reshape(image) for image in get_images(urban_files, 'urban64')]
+    urban_images = [reshape(image) for image in get_training_images(urban_files, 'urban64')]
 
     water_files = create_filename_list('water64')
-    water_images = [reshape(image) for image in get_images(water_files, 'water64')]
+    water_images = [reshape(image) for image in get_training_images(water_files, 'water64')]
 
     forest_training = get_training_data(forest_images, urban_images + water_images)
     urban_training = get_training_data(urban_images, forest_images + water_images)
@@ -37,12 +38,12 @@ def compute_weights(no_iterations, eta):
     export_weights(forest_weights, urban_weights, water_weights, no_iterations, eta)
 
 def create_filename_list(path):
-    '''Returns a list with file names of all files in a specific directory.'''
+    '''Return a list with file names of all files in a specific directory.'''
     image_list = os.listdir('./training_images/' + path)
     return image_list  
 
-def get_images(image_list, folder):
-    '''Returns all images from a file name list and appends it to a list.'''
+def get_training_images(image_list, folder):
+    '''Return all training images from a file name list and appends it to a list.'''
     images = []
     for filename in image_list:
         path = './training_images/' + folder + '/' + filename
@@ -51,7 +52,7 @@ def get_images(image_list, folder):
     return images
 
 def read(path, switch_channels=True):
-    '''Reads an image from file.'''
+    '''Read an image from file.'''
     image = cv2.imread(path)
     if switch_channels:
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -59,19 +60,18 @@ def read(path, switch_channels=True):
 
 def reshape(image):
     '''
-    This function reshapes the images into one dimensional arrays to be used for training
+    Reshape the image into one dimensional array to be used for training.
     It will return an array with the RGB values represented on a continuous basis:
     [r,g,b,r,g,b,...,r,g,b]
     '''
     h, w, d = image.shape
-    image_lst = image.reshape(h * w, d)
-    image_arr = np.reshape(image_lst, h * w * 3)
+    image_list = image.reshape(h * w, d)
+    image_arr = np.reshape(image_list, h * w * 3)
     return image_arr
 
-def get_training_data(right_array,wrong_array):
+def get_training_data(right_array, wrong_array):
     '''
-    Adds labels to the training data images depending 
-    on how the trainer should perceive them.
+    Add labels to the training data images depending on how the trainer should perceive them.
     It uses 1 for images to be considered correct and -1 for the opposite.
     '''
     training_data_list = []
@@ -102,7 +102,6 @@ def pla(training_data, no_iterations, eta):
 
     Returns the computed weights for a given training data.
     '''
-
     # Initial_error.
     error = np.random.random()
     dim = len(training_data[0][0])
@@ -120,13 +119,12 @@ def pla(training_data, no_iterations, eta):
 
 def perceptron(input, weights):
     ''' 
-    Sums up all the products of weight values and color values.
-    Then uses the activate function to return either 1 or -1 according
-    to if the dot product is positive or negative.
-    
-        - input: An array of RGB color data.       
-        - weights: An array with the weights that corresponds to 
-                   the category that is tested for.
+    Sum up all the products of weight values and color values.
+    It then uses the activate function to return either 1 or -1 according
+    to if the dot product is positive or negative. It takes the following arguments:
+
+        - input: An array of RGB color data.
+        - weights: An array with the weights that corresponds to the category that is tested for.
     '''
     dot_product = np.dot(input, weights)
     # The following line does the same as the above line, however it is slower:
@@ -135,21 +133,17 @@ def perceptron(input, weights):
     return output
 
 def activate(num):
-    '''Determines the output that the perceptron produces.'''
+    '''Determine the output that the perceptron produces.'''
     # Turn a sum over 0 into 1, and below 0 into -1.
     if num > 0:
         return 1
     return -1
 
-def make_result(weights):
-    '''Turns the weights array into a string that can be written into a module file.'''
-    result = '[ '
-    for weight in tqdm(weights):
-        result += str(weight) + ', '
-    result += ' ]'
-    return result
-
 def export_weights(forest_weights, urban_weights, water_weights, no_iterations, eta):
+    '''
+    Export the weights for all categories as well as the values of 
+    iterations and training rate into one single Python module.
+    '''
     try:
         print('\nCalculations finished successfully!')
         print('Exporting weights to module...')
@@ -173,3 +167,11 @@ def export_weights(forest_weights, urban_weights, water_weights, no_iterations, 
         print('\nWeight module created successfully!')  
     except Exception as _:
         print('\nWeight module failed to save!')
+
+def make_result(weights):
+    '''Turn the weights array into a string that can be written into a module file.'''
+    result = '[ '
+    for weight in tqdm(weights):
+        result += str(weight) + ', '
+    result += ' ]'
+    return result
