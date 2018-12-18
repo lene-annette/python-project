@@ -58,6 +58,10 @@ if __name__ == '__main__':
         
         args = parser.parse_args()
 
+        # Clean up (before program start). ignore_errors=True = Delete read-only files as well.
+        shutil.rmtree('categorized', ignore_errors=True)
+        shutil.rmtree('images', ignore_errors=True)
+
         # If the trainer argument has been used.
         if args.trainer:
             iterations, training_rate = args.trainer
@@ -102,7 +106,7 @@ if __name__ == '__main__':
         categorizer.categorize_image(image_list)
         print('Categorization finished successfully!')
 
-        # Clean up.
+        # Clean up (when program finishes). Only delete the "images" folder.
         shutil.rmtree('images', ignore_errors=True) # Delete read-only files as well.
 
         print('\nTo see the result of the categorized images, open the "categorized" folder.')  
