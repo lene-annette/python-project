@@ -94,7 +94,22 @@ def reshape(image):
 
 def predict(original_image, filename, save_path, test_image, weights):
     ''' 
-    ???
+    Given a test_image that has been resized, turn into 64 colors and where 
+    the array with rgb values has been reshaped to fit the perceptron and given
+    the weight corresponding to a certain category, this function will predict 
+    if the image belongs to this category using the perceptron function.
+    If the perceptron predicts that the image belongs to the category, the original
+    image is save into the category folder.
+     
+        - original_image: An array containing the original image.
+        - filename: The filename for the image to be stored.
+        - save_path: The folder name for the category folder.
+        - test_image: An array with the data in a format suitable
+                      for the perceptron.
+        - weights: An array with the weights for the category.
+
+    Returns 1 if the image is predicted to belong to the category 
+    and saved into the category folder and 0 if not.
     '''
     prediction = perceptron(test_image, weights)
     if (prediction == 1):       
@@ -110,6 +125,7 @@ def perceptron(input, weights):
     Sums up all the products of weight values and color values.
     Then uses the activate function to return either 1 or -1 according
     to if the dot product is positive or negative.
+    
         - input: An array of RGB color data.
         - weights: An array with the weights that corresponds to 
                    the category that is tested for.

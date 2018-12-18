@@ -84,13 +84,21 @@ def get_training_data(right_array,wrong_array):
 def pla(training_data, no_iterations, eta):
     '''
     The training algorithm of the perceptron. It takes the following arguments:
-        - training_data: An array of tuples, where the tuples are the image data
-                        and a label which indicates whether the image should be considered
-                        as 'right' or 'wrong' when used in training.
-        - no_iterations: The number of times the training algoritm should 
-                        pick an image from the training data and learn from it.
-                        Note: A high number of iterations is preferred.
-        - eta: The learning/training rate. A low value produces the most precise weights.
+
+        - training_data: An array of tuples, where the tuples 
+                         are the image data and a label which 
+                         indicates whether the image should be 
+                         considered as 'right' or 'wrong' 
+                         when used in training.
+
+        - no_iterations: The number of times the training 
+                         algoritm should pick an image from the 
+                         training data and learn from it.
+                         Note: A larger iterations number is 
+                         preferred to a lower.
+
+        - eta: The learning/training rate. 
+               Note: A low value produces the most precise weights.
 
     Returns the computed weights for a given training data.
     '''
@@ -115,7 +123,8 @@ def perceptron(input, weights):
     Sums up all the products of weight values and color values.
     Then uses the activate function to return either 1 or -1 according
     to if the dot product is positive or negative.
-        - input: An array of RGB color data.
+    
+        - input: An array of RGB color data.       
         - weights: An array with the weights that corresponds to 
                    the category that is tested for.
     '''
