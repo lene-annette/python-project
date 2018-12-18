@@ -22,7 +22,7 @@ $ python main.py -u <url>
 ```
 **Note**: Not all sites can be scraped; make sure that the images are not embedded.
 
-This project comes with a precomputed `weights.py` module (in the `modules` folder) that has been run with over **X** iterations using a training rate of **X**. This means that you do not need to train the perceptron. It has already been trained using the images in the `training_images` folder. However, if you wish to train the perceptron yourself, simply run:
+This project comes with a precomputed `weights.py` module (in the `modules` folder) that has been run with over **X** iterations using a training rate of **X**. This means that you do not need to train the perceptrons. It has already been trained using the images in the `training_images` folder. However, if you wish to train the perceptrons yourself, simply run:
 ```
 $ python main.py -t <iterations> <training rate>
 ```
