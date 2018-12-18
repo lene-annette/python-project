@@ -4,9 +4,8 @@ import os
 import scipy.spatial as sp
 from tqdm import tqdm
 
+from lib.define_colors64 import color_list as colors64
 from modules.weights import forest_weights, urban_weights, water_weights
-
-_color_list = colors64()
 
 def categorize_image(image_list):
     '''
@@ -17,7 +16,7 @@ def categorize_image(image_list):
         os.makedirs('./categorized/')
 
     # Create the color tree to be used when converting images into 64 colors.
-    tree = create_tree(_color_list)
+    tree = create_tree(colors64)
 
     print('Determining the category for each image...')
     for filename in tqdm(image_list):
@@ -55,25 +54,6 @@ def create_tree(colors):
     tree = sp.cKDTree(colors) # pylint: disable=not-callable
     return tree
 
-def colors64():
-    '''
-    Finds 64 colors by choosing the middle values in 
-    each of the 64 small cubes in the RGB color cube.
-    The first color will be [32,32,32], the next [96,32,32] and so on.
-    
-    RGB colors are used to train our perceptrons, but only with 64 colors.
-    The RGB colors from the RGB cube are made from the values 255x255x255.
-    '''
-    colors = []
-    for b in range(4):
-        for g in range(4):
-            for r in range(4):
-                _r = 32 + r * 64
-                _g = 32 + g * 64
-                _b = 32 + b * 64
-                colors.append([_r, _g, _b])
-    return colors
-
 def read(path, switch_channels=True):
     '''Reads an image from file.'''
     image = cv2.imread(path)
@@ -97,7 +77,7 @@ def query_tree(small_image, tree):
     # Get the Euclidean distance and index of each C64 color in the tree.
     _, result = tree.query(small_image_list)
 
-    for idx, c in enumerate(_color_list):
+    for idx, c in enumerate(colors64):
         small_image_list[result == idx] = c
     return small_image_list.reshape(h, w, d)
 
