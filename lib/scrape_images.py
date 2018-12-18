@@ -22,7 +22,10 @@ def collect_img_links(url):
         # If there are any img tags, then take the src (the link) of all the images
         # and return them. Otherwise, throw a RuntimeError.
         if img_tags:
-            return [img.get('src') for img in img_tags if img.get('src').startswith('http')]
+            return [img.get('src') for img in img_tags 
+                if img.get('src').startswith('http') 
+                    and (img.get('src').endswith('jpg') 
+                        or img.get('src').endswith('png'))]
         else:
             raise RuntimeError('There are no images to scrape from the provided URL! Try a different URL.')
     except Exception as e:
