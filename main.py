@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 import sys
 import time
 from threading import Thread
@@ -30,7 +31,7 @@ if __name__ == '__main__':
             
             From out-of-the-box, it comes with perceptrons that have already been trained 
             using a precomputed weight module with a training rate of 0.01 over 1.000.000 iterations. 
-            This is to avoid any time-consuming tasks of training the perceptrons. 
+            This is to avoid the time-consuming tasks of training the perceptrons. 
             Instead of training the perceptrons every time the program is executed, the perceptrons 
             simply uses the weights from this module in order to categorize scraped images. 
 
@@ -101,10 +102,12 @@ if __name__ == '__main__':
         categorizer.categorize_image(image_list)
         print('Categorization finished successfully!')
 
+        # Clean up.
+        shutil.rmtree('images', ignore_errors=True) # Delete read-only files as well.
+
         print('\nTo see the result of the categorized images, open the "categorized" folder.')  
     except Exception as e:
         print(e)
         sys.exit(1)
     finally:
         print('\nShutting down...')
-
