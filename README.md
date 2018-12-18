@@ -35,7 +35,7 @@ python main.py -u https://wallpaperlayer.com/silhouette-wallpaper-1109.html -t 1
 
 ### Optional arguments
 * `-h, --help`    -  show the help message and exit
-* `-u, --url`     -  url to scrape images from
+* `-u, --url`     -  a URL to scrape images from
 * `-t, --trainer` -  initiate trainer to compute weights with given values of iterations (min. 1000) and training rate (between 0.001-0.9)
 
 ## Output and Results

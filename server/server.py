@@ -15,7 +15,7 @@ def home():
     image_list = os.listdir(dir_name)
 
     url = 'http://localhost:5000/static'
-    img_tags = [f'<img src="{url}/{file_name}">' for file_name in image_list]
+    img_tags = [f'<img src="{url}/{filename}">' for filename in image_list]
 
     div = '<div>' + ''.join(img_tags) + '</div>'
 

@@ -37,8 +37,8 @@ def download_imgs(links, output_folder='./images/'):
     if not os.path.isdir(output_folder):
         os.makedirs(output_folder)
     for link in tqdm(links):
-        file_name = os.path.join(output_folder, os.path.basename(link))
-        download(link, file_name)
+        filename = os.path.join(output_folder, os.path.basename(link))
+        download(link, filename)
 
 def download(from_url, to_file):
     '''Download from URL to file.'''

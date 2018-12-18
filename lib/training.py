@@ -3,10 +3,10 @@ import numpy as np
 import os
 from tqdm import tqdm
 
-def calculate_weights(no_iterations, eta):
+def compute_weights(no_iterations, eta):
     '''
     Uses helper functions to read the training images from file, reshape them and then 
-    finally use the `pla` function to calculate the weights to be used be the perceptrons.
+    finally use the `pla` function to compute the weights to be used be the perceptrons.
     It also writes the weights into a python module, which is imported and used in another library file.
     '''
     forest_files = create_filename_list('forest64')
@@ -92,7 +92,7 @@ def pla(training_data, no_iterations, eta):
                         Note: A high number of iterations is preferred.
         - eta: The learning/training rate. A low value produces the most precise weights.
 
-    Returns the calculated weights for a given training data.
+    Returns the computed weights for a given training data.
     '''
 
     # Initial_error.

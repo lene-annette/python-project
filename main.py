@@ -16,33 +16,40 @@ if __name__ == '__main__':
             formatter_class=argparse.RawTextHelpFormatter,
             description=
             '''
-            This program scrapes images from a given URL, and categorizes 
-            each image under the following categories: forest, urban, water or others.
-            It uses a perceptron to recognize the colors in an image.
+            This program uses perceptrons to analyze the colors in an image in order to 
+            determine which of the following categories the image belongs to: 
+            forest, urban or water. If a match is not found within one of these categories 
+            the image will be considered as others. The program scrapes images from a given URL, and then 
+            categorizes each image under one of the above categories.
             
             Running `$ python main.py` will launch a local Flask server with random images that will be scraped.
-            Otherwise, use -u or --url argument to scrape images from an URL. 
-            Note: Not all sites can be scraped, make sure that the images are not embedded.
+            Otherwise, use the -u or --url argument to scrape images from a URL. 
+            Note: Not all sites can be scraped; make sure that the images are not embedded.
             
-            This comes with pre-built weights for all three categories with a training rate of 0.2 with 4000 iterations.
-            This means that the perceptron is already "trained" to analyze and categorize the images.
-            This is to make the program work out of the box as to avoid any time-consuming tasks of training the perceptron.
-            Simply, run the program and see the categorized images under the "categorized" folder.
-            If you would like to train the perceptron with your own defined values, run the script with the 
+            From out-of-the-box, it comes with perceptrons that have already been trained 
+            using a precomputed weight module with a training rate of 0.01 over 1.000.000 iterations. 
+            This is to avoid any time-consuming tasks of training the perceptrons. 
+            Instead of training the perceptrons every time the program is executed, the perceptrons 
+            simply uses the weights from this module in order to categorize scraped images. 
+
+            If you would like to train the perceptrons with your own defined values, run the program with the 
             argument -t or --trainer with two defined values: iteration and training rate, respectively.
             Example: `$ python main.py -t 10000 0.3`
+
+            Run the program and see the categorized images under the "categorized" folder
+            after the program finishes and shuts down.
             '''
         )
 
         parser.add_argument('-u', '--url', 
             metavar='<url>', 
-            help='URL to scrape images from', 
+            help='a URL to scrape images from', 
         )
         parser.add_argument('-t', '--trainer', 
             nargs=2,
             type=float,
             metavar=('<iterations (min. 1000)>', '<training rate (0.001-0.9)>'),
-            help='Initiate trainer with given values of iterations and training rate'
+            help='initiate trainer with given values of iterations and training rate'
         )
         
         args = parser.parse_args()
@@ -58,7 +65,7 @@ if __name__ == '__main__':
             print('\nInitiating the trainer with the following settings...')
             print(f'Iterations: {int(iterations)}')
             print(f'Learning rate: {training_rate}')
-            trainer.calculate_weights(int(iterations), training_rate)
+            trainer.compute_weights(int(iterations), training_rate)
             print('Trainer finished!')
 
         if args.url:
