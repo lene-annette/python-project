@@ -1,7 +1,7 @@
 # Python Project: Image Analyzer & Categorizer using Perceptrons
-This program uses perceptrons to analyze the colors in an image in order to determine which of the following categories the image belongs to: `forest`, `urban` or `water`. If a match is not found within one of these categories the image will be considereds as `others`. The program scrapes images from a given URL, and then categorizes each image under one of the above categories. To run the program, see the [Usage](#usage) section below.
+This program uses perceptrons to analyze the colors in an image in order to determine which of the following categories the image belongs to: `forest`, `urban` or `water`. If a match is not found within one of these categories the image will be considered as `others`. The program scrapes images from a given URL, and then categorizes each image under one of the above categories. To run the program, see the [Usage](#usage) section below.
 
-From out-of-the-box, it comes with perceptrons that has already been trained using a precomputed weight module. This is to avoid any time-consuming tasks of training the perceptrons. Instead of training the perceptrons every time the program is executed, the perceptrons simply uses the weights from this module in order to categorize scraped images. To train the perceptrons with new weights, see the [Usage](#usage) section below.
+From out-of-the-box, it comes with perceptrons that have already been trained using a precomputed weight module. This is to avoid any time-consuming tasks of training the perceptrons. Instead of training the perceptrons every time the program is executed, the perceptrons simply uses the weights from this module in order to categorize scraped images. To train the perceptrons with new weights, see the [Usage](#usage) section below.
 
 The output and results of the program are the categorized images, which can be found in a created ```categorized``` folder after the program finishes and shuts down.
 
@@ -22,7 +22,7 @@ $ python main.py -u <url>
 ```
 **Note**: Not all sites can be scraped; make sure that the images are not embedded.
 
-This project comes with a precomputed `weights.py` module (in the `modules` folder) that has been run with over **X** iterations using a training rate of **X**. This means that you do not need to train the perceptrons. It has already been trained using the images in the `training_images` folder. However, if you wish to train the perceptrons yourself, simply run:
+This project comes with a precomputed `weights.py` module (in the `modules` folder) that has been run with over **1.000.000** iterations using a training rate of **0.01**. This means that you do not need to train the perceptrons. It has already been trained using the images in the `training_images` folder. However, if you wish to train the perceptrons yourself, simply run:
 ```
 $ python main.py -t <iterations> <training rate>
 ```
