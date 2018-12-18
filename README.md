@@ -1,7 +1,7 @@
 # Python Project: Image Analyzer & Categorizer using Perceptrons
-This program uses perceptrons to analyze the colors in an image in order to determine which of the following categories the image belongs to: `forest`, `urban`, `water` and `others`. The program scrapes images from a given URL, and then categorizes each image under one of the above categories. To run the perceptron, see the [Usage](#usage) section below.
+This program uses perceptrons to analyze the colors in an image in order to determine which of the following categories the image belongs to: `forest`, `urban` or `water`. If a match is not found within one of these categories the image will be considereds as `others`. The program scrapes images from a given URL, and then categorizes each image under one of the above categories. To run the program, see the [Usage](#usage) section below.
 
-From out-of-the-box, it comes with a perceptron that is already trained using a precomputed module. This is to avoid any time-consuming tasks of training the perceptron. Instead of training the perceptron every time the program is run, the perceptron simply uses this module to categorize scraped images. To train the perceptron, see the [Usage](#usage) section below.
+From out-of-the-box, it comes with perceptrons that has already been trained using a precomputed weight module. This is to avoid any time-consuming tasks of training the perceptrons. Instead of training the perceptrons every time the program is executed, the perceptrons simply uses the weights from this module in order to categorize scraped images. To train the perceptrons with new weights, see the [Usage](#usage) section below.
 
 The output and results of the program are the categorized images, which can be found in a created ```categorized``` folder after the program finishes and shuts down.
 
@@ -16,7 +16,7 @@ $ python main.py
 ```
 This will launch a local [Flask](http://flask.pocoo.org/) server with random images that will be scraped and categorized.
 
-You can also scrape from a given URL:
+You can also scrape images to be categorized from a given URL:
 ```
 $ python main.py -u <url>
 ```
