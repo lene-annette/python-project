@@ -1,5 +1,5 @@
-# Python Project: Image Analyzer & Categorizer using a Perceptron
-This program uses a perceptron to analyze the colors in an image in order to determine which of the following categories the image belongs to: `forest`, `urban`, `water` and `others`. The program scrapes images from a given URL, and then categorizes each image under one of the above categories. To run the perceptron, see the [Usage](#usage) section below.
+# Python Project: Image Analyzer & Categorizer using Perceptrons
+This program uses perceptrons to analyze the colors in an image in order to determine which of the following categories the image belongs to: `forest`, `urban`, `water` and `others`. The program scrapes images from a given URL, and then categorizes each image under one of the above categories. To run the perceptron, see the [Usage](#usage) section below.
 
 From out-of-the-box, it comes with a perceptron that is already trained using a precomputed module. This is to avoid any time-consuming tasks of training the perceptron. Instead of training the perceptron every time the program is run, the perceptron simply uses this module to categorize scraped images. To train the perceptron, see the [Usage](#usage) section below.
 
