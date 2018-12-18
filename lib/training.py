@@ -39,14 +39,14 @@ def compute_weights(no_iterations, eta):
 
 def create_filename_list(path):
     '''Return a list with file names of all files in a specific directory.'''
-    image_list = os.listdir('./training_images/' + path)
+    image_list = os.listdir(os.path.join('training_images', path))
     return image_list  
 
 def get_training_images(image_list, folder):
     '''Return all training images from a file name list and appends it to a list.'''
     images = []
     for filename in image_list:
-        path = './training_images/' + folder + '/' + filename
+        path = os.path.join('training_images', folder, filename)
         image = read(path)
         images.append(image)
     return images
@@ -159,7 +159,7 @@ def export_weights(forest_weights, urban_weights, water_weights, no_iterations, 
 
         module_txt = 'forest_weights = {} \nurban_weights = {} \nwater_weights = {} \niterations = {} \neta = {}'.format(forest_str, urban_str, water_str, no_iterations, eta)
 
-        module_dir = './modules'
+        module_dir = 'modules'
         if not os.path.isdir(module_dir):
             os.makedirs(module_dir)
         with open(os.path.join(module_dir, 'weights.py'), 'w' ) as fp:

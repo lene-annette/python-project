@@ -12,8 +12,9 @@ def categorize_image(image_list):
     Run through a list of images and determines which 
     category an image is predicted to belong to.
     '''
-    if not os.path.isdir('./categorized/'):
-        os.makedirs('./categorized/')
+    dir_path = 'categorized'
+    if not os.path.isdir(dir_path):
+        os.makedirs(dir_path)
 
     # Create the color tree to be used when converting images into 64 colors.
     tree = create_tree(colors64)
@@ -22,7 +23,7 @@ def categorize_image(image_list):
     for filename in tqdm(image_list):
         categories_found = 0
 
-        image_location = './images/' + filename
+        image_location = os.path.join('images', filename)
         image = read(image_location)
 
         # Resize image to a fixed size of 400x300.
@@ -41,10 +42,11 @@ def categorize_image(image_list):
         # This will check if any matching category has been found for the image.
         # Otherwise, the image will be saved in a folder called 'others'.
         if (categories_found == 0):
-            if not os.path.isdir('./categorized/others'):
-                os.makedirs('./categorized/others')
+            new_dir_path = os.path.join(dir_path, 'others') 
+            if not os.path.isdir(new_dir_path):
+                os.makedirs(new_dir_path)
             
-            new_file_location = './categorized/others/' + filename
+            new_file_location = os.path.join(new_dir_path, filename)
             cv2.imwrite(new_file_location, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
     print('All images saved in the "categorized" folder!')
 
@@ -111,10 +113,11 @@ def predict(original_image, filename, save_path, test_image, weights):
     the image into the category folder and return 1. If not, it will return 0.
     '''
     prediction = perceptron(test_image, weights)
-    if (prediction == 1):       
-        if not os.path.isdir('./categorized/' + save_path):
-            os.makedirs('./categorized/' + save_path)
-        new_file_location = './categorized/' + save_path + '/' + filename
+    if (prediction == 1):
+        dir_path = os.path.join('categorized', save_path)
+        if not os.path.isdir(dir_path):
+            os.makedirs(dir_path)
+        new_file_location = os.path.join(dir_path, filename)
         cv2.imwrite(new_file_location, cv2.cvtColor(original_image, cv2.COLOR_RGB2BGR))
         return 1
     return 0

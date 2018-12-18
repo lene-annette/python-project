@@ -19,8 +19,9 @@ def collect_img_links(url):
 
         # Collect all img tags.
         img_tags = soup.find_all('img')
-        # If there are any img tags, then take the src (the link) of all the images
-        # and return them. Otherwise, throw a RuntimeError.
+        # If there are any img tags, then take the src (the link) of 
+        # all the images (jpg & png files only) and return them. 
+        # Otherwise, throw a RuntimeError.
         if img_tags:
             return [img.get('src') for img in img_tags 
                 if img.get('src').startswith('http') 
@@ -35,7 +36,7 @@ def collect_img_links(url):
         else:
             raise Exception('Either the URL is malformed or does not exist!')
 
-def download_imgs(links, output_folder='./images/'):
+def download_imgs(links, output_folder='images'):
     '''Download a list of images to output folder.'''
     if not os.path.isdir(output_folder):
         os.makedirs(output_folder)

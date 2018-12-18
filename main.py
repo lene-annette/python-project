@@ -101,7 +101,7 @@ if __name__ == '__main__':
             print('Scraping finished successfully!')
 
         print('\nInitiating the categorization process...')
-        image_list = os.listdir('./images')
+        image_list = os.listdir('images')
         # Categorize the downloaded images.
         categorizer.categorize_image(image_list)
         print('Categorization finished successfully!')

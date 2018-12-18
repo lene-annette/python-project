@@ -12,7 +12,7 @@ log.disabled = True
 @server.route('/')
 def home():
     '''Generates an HTML page with all the images in the static folder on the root path.'''
-    dir_name = './server/static'
+    dir_name = os.path.join('server', 'static')
     # Get all image files in the static folder.
     image_list = os.listdir(dir_name)
 
