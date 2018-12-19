@@ -6,6 +6,8 @@ from tqdm import tqdm
 
 from lib.define_colors64 import color_list as colors64
 from modules.weights import forest_weights, urban_weights, water_weights
+from lib.perceptron import perceptron
+import lib.utils as utils
 
 def categorize_image(image_list):
     '''
@@ -24,16 +26,16 @@ def categorize_image(image_list):
         categories_found = 0
 
         image_location = os.path.join('images', filename)
-        image = read(image_location)
+        image = utils.read(image_location)
 
         # Resize image to a fixed size of 400x300.
-        resized_image = resize(image, 400, 300)
+        resized_image = utils.resize(image, 400, 300)
 
         # Converting image into 64 colors.
         new_image = query_tree(resized_image, tree)
         
         # Reshaping image to be used in the perceptrons.
-        test_image = reshape(new_image)
+        test_image = utils.reshape(new_image)
 
         categories_found += predict(image, filename, 'forest', test_image, forest_weights)
         categories_found += predict(image, filename, 'urban', test_image, urban_weights)
@@ -56,18 +58,6 @@ def create_tree(colors):
     tree = sp.cKDTree(colors) # pylint: disable=not-callable
     return tree
 
-def read(path, switch_channels=True):
-    '''Read an image from file.'''
-    image = cv2.imread(path)
-    if switch_channels:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    return image
-
-def resize(image, new_x_dim, new_y_dim):
-    '''Resize an image into a fixed size.'''
-    resized_image = cv2.resize(image, (new_x_dim, new_y_dim), interpolation=cv2.INTER_AREA)
-    return resized_image
-
 def query_tree(small_image, tree):
     '''
     Run through all the pixels in an image and replaces the color
@@ -82,17 +72,6 @@ def query_tree(small_image, tree):
     for idx, c in enumerate(colors64):
         small_image_list[result == idx] = c
     return small_image_list.reshape(h, w, d)
-
-def reshape(image):
-    '''
-    Reshape the image into one dimensional array to be used for training.
-    It will return an array with the RGB values represented on a continuous basis:
-    [r,g,b,r,g,b,...,r,g,b]
-    '''
-    h, w, d = image.shape
-    image_list = image.reshape(h * w, d)
-    image_arr = np.reshape(image_list, h * w * 3)
-    return image_arr
 
 def predict(original_image, filename, save_path, test_image, weights):
     ''' 
@@ -121,25 +100,3 @@ def predict(original_image, filename, save_path, test_image, weights):
         cv2.imwrite(new_file_location, cv2.cvtColor(original_image, cv2.COLOR_RGB2BGR))
         return 1
     return 0
-
-def perceptron(input, weights):
-    ''' 
-    Sum up all the products of weight values and color values.
-    It then uses the activate function to return either 1 or -1 according
-    to if the dot product is positive or negative. It takes the following arguments:
-
-        - input: An array of RGB color data.
-        - weights: An array with the weights that corresponds to the category that is tested for.
-    '''
-    dot_product = np.dot(input, weights)
-    # The following line does the same as the above line, however it is slower:
-    # dot_product = sum([i * w for i, w in zip(input, weights)])
-    output = activate(dot_product)
-    return output
-
-def activate(num):
-    '''Determine the output that the perceptron produces.'''
-    # Turn a sum over 0 into 1, and below 0 into -1.
-    if num > 0:
-        return 1
-    return -1

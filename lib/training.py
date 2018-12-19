@@ -3,6 +3,9 @@ import numpy as np
 import os
 from tqdm import tqdm
 
+from lib.perceptron import perceptron
+import lib.utils as utils
+
 def compute_weights(no_iterations, eta):
     '''
     Compute the weights for all categories using a number of iterations and a training rate.
@@ -10,14 +13,14 @@ def compute_weights(no_iterations, eta):
     finally use the `pla` function to compute the weights to be used be the perceptrons.
     It also writes the weights into a python module, which is imported and used in another library file.
     '''
-    forest_files = create_filename_list('forest64')
-    forest_images = [reshape(image) for image in get_training_images(forest_files, 'forest64')]
+    forest_files = os.listdir(os.path.join('training_images', 'forest64'))
+    forest_images = [utils.reshape(image) for image in get_training_images(forest_files, 'forest64')]
 
-    urban_files = create_filename_list('urban64')
-    urban_images = [reshape(image) for image in get_training_images(urban_files, 'urban64')]
+    urban_files = os.listdir(os.path.join('training_images', 'urban64'))
+    urban_images = [utils.reshape(image) for image in get_training_images(urban_files, 'urban64')]
 
-    water_files = create_filename_list('water64')
-    water_images = [reshape(image) for image in get_training_images(water_files, 'water64')]
+    water_files = os.listdir(os.path.join('training_images', 'water64'))
+    water_images = [utils.reshape(image) for image in get_training_images(water_files, 'water64')]
 
     forest_training = get_training_data(forest_images, urban_images + water_images)
     urban_training = get_training_data(urban_images, forest_images + water_images)
@@ -37,37 +40,14 @@ def compute_weights(no_iterations, eta):
     # Export the weights to a Python module.
     export_weights(forest_weights, urban_weights, water_weights, no_iterations, eta)
 
-def create_filename_list(path):
-    '''Return a list with file names of all files in a specific directory.'''
-    image_list = os.listdir(os.path.join('training_images', path))
-    return image_list  
-
 def get_training_images(image_list, folder):
     '''Return all training images from a file name list and appends it to a list.'''
     images = []
     for filename in image_list:
         path = os.path.join('training_images', folder, filename)
-        image = read(path)
+        image = utils.read(path)
         images.append(image)
     return images
-
-def read(path, switch_channels=True):
-    '''Read an image from file.'''
-    image = cv2.imread(path)
-    if switch_channels:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    return image
-
-def reshape(image):
-    '''
-    Reshape the image into one dimensional array to be used for training.
-    It will return an array with the RGB values represented on a continuous basis:
-    [r,g,b,r,g,b,...,r,g,b]
-    '''
-    h, w, d = image.shape
-    image_list = image.reshape(h * w, d)
-    image_arr = np.reshape(image_list, h * w * 3)
-    return image_arr
 
 def get_training_data(right_array, wrong_array):
     '''
@@ -116,28 +96,6 @@ def pla(training_data, no_iterations, eta):
         # If an error is different from 0, the weights will be adjusted.
         weights += eta * error * inp_vec          
     return weights 
-
-def perceptron(input, weights):
-    ''' 
-    Sum up all the products of weight values and color values.
-    It then uses the activate function to return either 1 or -1 according
-    to if the dot product is positive or negative. It takes the following arguments:
-
-        - input: An array of RGB color data.
-        - weights: An array with the weights that corresponds to the category that is tested for.
-    '''
-    dot_product = np.dot(input, weights)
-    # The following line does the same as the above line, however it is slower:
-    # dot_product = sum([i * w for i, w in zip(input, weights)])
-    output = activate(dot_product)
-    return output
-
-def activate(num):
-    '''Determine the output that the perceptron produces.'''
-    # Turn a sum over 0 into 1, and below 0 into -1.
-    if num > 0:
-        return 1
-    return -1
 
 def export_weights(forest_weights, urban_weights, water_weights, no_iterations, eta):
     '''
