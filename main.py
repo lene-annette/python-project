@@ -5,9 +5,9 @@ import sys
 import time
 from threading import Thread
 
-import lib.categorize_image as categorizer
-import lib.scrape_images as scraper
-import lib.training as trainer
+import lib.categorizer as categorizer
+import lib.scraper as scraper
+import lib.trainer as trainer
 import server.server as server
 
 if __name__ == '__main__':

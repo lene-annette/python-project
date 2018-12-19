@@ -4,7 +4,7 @@ import os
 import scipy.spatial as sp
 from tqdm import tqdm
 
-from lib.define_colors64 import color_list as colors64
+from lib.colors64 import color_list as colors64
 from modules.weights import forest_weights, urban_weights, water_weights
 from lib.perceptron import perceptron
 import lib.utils as utils
