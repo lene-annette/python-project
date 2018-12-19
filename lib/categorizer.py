@@ -11,7 +11,7 @@ import lib.utils as utils
 
 def categorize_image(image_list):
     '''
-    Run through a list of images and determines which 
+    Runs through a list of images and determines which 
     category an image is predicted to belong to.
     '''
     dir_path = 'categorized'
@@ -53,14 +53,14 @@ def categorize_image(image_list):
     print('All images saved in the "categorized" folder!')
 
 def create_tree(colors):
-    '''Create a color tree (cKDTree).'''
-    # Creating kd-tree from C64 colors.
+    '''Creates a color tree (cKDTree).'''
+    # Creating a cKDTree from C64 colors.
     tree = sp.cKDTree(colors) # pylint: disable=not-callable
     return tree
 
 def query_tree(small_image, tree):
     '''
-    Run through all the pixels in an image and replaces the color
+    Runs through all the pixels in an image and replaces the color
     for the specific pixel with the color that is closest 
     to its resembling 64 color in the color tree.
     '''

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 def read(path, switch_channels=True):
-    '''Read an image from file.'''
+    '''Reads an image from file.'''
     image = cv2.imread(path)
     if switch_channels:
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -10,7 +10,7 @@ def read(path, switch_channels=True):
 
 def reshape(image):
     '''
-    Reshape the image into one dimensional array to be used for training.
+    Reshapes the image into one dimensional array to be used for training.
     It will return an array with the RGB values represented on a continuous basis:
     [r,g,b,r,g,b,...,r,g,b]
     '''
@@ -20,6 +20,6 @@ def reshape(image):
     return image_arr
 
 def resize(image, new_x_dim, new_y_dim):
-    '''Resize an image into a fixed size.'''
+    '''Resizes an image into a fixed size.'''
     resized_image = cv2.resize(image, (new_x_dim, new_y_dim), interpolation=cv2.INTER_AREA)
     return resized_image

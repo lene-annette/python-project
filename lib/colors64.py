@@ -1,10 +1,10 @@
 def colors64():
     '''
-    Find 64 colors by choosing the middle values in 
+    Finds 64 colors by choosing the middle values in 
     each of the 64 small cubes in the RGB color cube.
     The first color will be [32,32,32], the next [96,32,32] and so on.
     
-    RGB colors are used to train our perceptrons, but only with 64 colors.
+    RGB colors are used to train the perceptrons, but only with 64 colors.
     The RGB colors from the RGB cube are made from the values 255x255x255.
     '''
     colors = []

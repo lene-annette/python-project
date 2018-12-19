@@ -8,10 +8,10 @@ import lib.utils as utils
 
 def compute_weights(no_iterations, eta):
     '''
-    Compute the weights for all categories using a number of iterations and a training rate.
+    Computes the weights for all categories using a number of iterations and a training rate.
     This function uses helper functions to read the training images from file, reshape them and then 
-    finally use the `pla` function to compute the weights to be used be the perceptrons.
-    It also writes the weights into a python module, which is imported and used in another library file.
+    finally use the `pla` function to compute the weights to be used by the perceptrons.
+    It also writes the weights into a Python module, which is imported and used in another library file.
     '''
     forest_files = os.listdir(os.path.join('training_images', 'forest64'))
     forest_images = [utils.reshape(image) for image in get_training_images(forest_files, 'forest64')]
@@ -41,7 +41,7 @@ def compute_weights(no_iterations, eta):
     export_weights(forest_weights, urban_weights, water_weights, no_iterations, eta)
 
 def get_training_images(image_list, folder):
-    '''Return all training images from a file name list and appends it to a list.'''
+    '''Returns all training images from a file name list and appends it to a list.'''
     images = []
     for filename in image_list:
         path = os.path.join('training_images', folder, filename)
@@ -51,7 +51,7 @@ def get_training_images(image_list, folder):
 
 def get_training_data(right_array, wrong_array):
     '''
-    Add labels to the training data images depending on how the trainer should perceive them.
+    Adds labels to the training data images depending on how the trainer should perceive them.
     It uses 1 for images to be considered correct and -1 for the opposite.
     '''
     training_data_list = []
@@ -72,7 +72,7 @@ def pla(training_data, no_iterations, eta):
                          when used in training.
 
         - no_iterations: The number of times the training 
-                         algoritm should pick an image from the 
+                         algorithm should pick an image from the 
                          training data and learn from it.
                          Note: A larger iterations number is 
                          preferred to a lower.
@@ -86,7 +86,7 @@ def pla(training_data, no_iterations, eta):
     error = np.random.random()
     dim = len(training_data[0][0])
     # An array of random values between 0 and 1 is made to be used as
-    # starting weights before the learning algoritm begins.
+    # starting weights before the learning algorithm begins.
     weights =  np.random.random(dim)
     for i in tqdm(range(no_iterations)):
         inp_vec, expected_label = training_data[i % len(training_data)]
@@ -99,7 +99,7 @@ def pla(training_data, no_iterations, eta):
 
 def export_weights(forest_weights, urban_weights, water_weights, no_iterations, eta):
     '''
-    Export the weights for all categories as well as the values of 
+    Exports the weights for all categories as well as the values of 
     iterations and training rate into one single Python module.
     '''
     try:
@@ -127,7 +127,7 @@ def export_weights(forest_weights, urban_weights, water_weights, no_iterations, 
         print('\nWeight module failed to save!')
 
 def make_result(weights):
-    '''Turn the weights array into a string that can be written into a module file.'''
+    '''Turns the weights array into a string that can be written into a module file.'''
     result = '[ '
     for weight in tqdm(weights):
         result += str(weight) + ', '

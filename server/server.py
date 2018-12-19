@@ -17,7 +17,7 @@ def home():
     image_list = os.listdir(dir_name)
 
     url = 'http://localhost:5000/static'
-    # Build img tags with the files in the static folder.
+    # Build img tags using the files in the static folder.
     img_tags = [f'<img src="{url}/{filename}">' for filename in image_list]
 
     # Append all img tags inside a div.
@@ -38,5 +38,5 @@ def home():
     return flask.render_template_string(html)
 
 def run():
-    '''Runs Flask server.'''
+    '''Starts and runs the Flask server.'''
     server.run()
